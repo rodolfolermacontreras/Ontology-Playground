@@ -222,19 +222,19 @@ export function NLBuilderModal({ onClose }: NLBuilderModalProps) {
               </div>
             )}
 
-            {step === 'error' && (
-              <div className="nl-builder-content nl-error">
-                <AlertCircle size={48} style={{ color: '#FF6B6B' }} />
-                <p style={{ color: '#FF6B6B' }}>Generation Failed</p>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>
-                  {error || 'An unknown error occurred'}
-                </p>
-                <button className="btn-secondary" onClick={() => setStep('input')}>
-                  Try Again
-                </button>
-              </div>
-            )}
-          </motion.div>
-        </motion.div>
+        {step === 'error' && (
+          <div className="nl-builder-content nl-error">
+            <AlertCircle size={48} style={{ color: '#FF6B6B' }} />
+            <p style={{ color: '#FF6B6B' }}>Generation Failed</p>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>
+              {error || 'An unknown error occurred'}
+            </p>
+            <button className="btn-secondary" onClick={() => setStep('input')}>
+              Try Again
+            </button>
+          </div>
+        )}
+      </motion.div>
+    </motion.div>
   );
 }
