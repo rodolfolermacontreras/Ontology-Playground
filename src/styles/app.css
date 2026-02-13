@@ -2058,8 +2058,8 @@ body {
   padding: 6px 12px;
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
-  background: var(--bg-tertiary);
-  color: var(--text-secondary);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
   font-size: 12px;
   font-weight: 500;
   cursor: pointer;
@@ -2067,17 +2067,9 @@ body {
   transition: background var(--transition-fast), color var(--transition-fast);
 }
 .designer-toolbar-btn:hover {
-  background: var(--bg-elevated);
-  color: var(--text-primary);
-}
-.designer-toolbar-btn.primary {
   background: var(--ms-blue);
   color: white;
   border-color: var(--ms-blue);
-}
-.designer-toolbar-btn.primary:hover {
-  background: var(--ms-blue-dark);
-  border-color: var(--ms-blue-dark);
 }
 .designer-toolbar-btn.submit {
   background: #24292e;

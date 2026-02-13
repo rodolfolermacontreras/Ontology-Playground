@@ -65,10 +65,10 @@ export function DesignerToolbar() {
           <CheckCircle size={14} /> Validate
         </button>
         <div className="designer-toolbar-sep" />
-        <button className="designer-toolbar-btn primary" onClick={handleExportRDF} title="Export RDF">
+        <button className="designer-toolbar-btn" onClick={handleExportRDF} title="Export RDF">
           <Download size={14} /> Export RDF
         </button>
-        <button className="designer-toolbar-btn primary" onClick={handleLoadInPlayground} title="Load in Playground">
+        <button className="designer-toolbar-btn" onClick={handleLoadInPlayground} title="Load in Playground">
           <Upload size={14} /> Load in Playground
         </button>
         <button className="designer-toolbar-btn submit" onClick={handleSubmitToCatalogue} title={!GITHUB_CLIENT_ID ? 'Download RDF to submit manually' : 'Submit as a pull request'}>
