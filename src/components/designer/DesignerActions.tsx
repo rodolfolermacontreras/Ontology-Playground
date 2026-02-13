@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Download, AlertTriangle, CheckCircle, Upload, Github } from 'lucide-react';
+import { Download, AlertTriangle, CheckCircle, Upload, Github, FilePlus } from 'lucide-react';
 import { useDesignerStore } from '../../store/designerStore';
 import type { ValidationError } from '../../store/designerStore';
 import { useAppStore } from '../../store/appStore';
@@ -9,27 +9,21 @@ import { SubmitCatalogueModal } from './SubmitCatalogueModal';
 
 const GITHUB_CLIENT_ID = import.meta.env.VITE_GITHUB_CLIENT_ID || '';
 
-export function DesignerActions() {
-  const { ontology, validationErrors, validate, resetDraft } = useDesignerStore();
+/**
+ * Toolbar buttons — rendered in the designer topbar.
+ */
+export function DesignerToolbar() {
+  const { ontology, validate, resetDraft } = useDesignerStore();
   const loadOntology = useAppStore((s) => s.loadOntology);
-  const [exportMessage, setExportMessage] = useState<string | null>(null);
   const [showSubmitModal, setShowSubmitModal] = useState(false);
 
   const handleValidate = () => {
-    const errors = validate();
-    if (errors.length === 0) {
-      setExportMessage('Ontology is valid!');
-    } else {
-      setExportMessage(null);
-    }
+    validate();
   };
 
   const handleExportRDF = () => {
     const errors = validate();
-    if (errors.length > 0) {
-      setExportMessage(null);
-      return;
-    }
+    if (errors.length > 0) return;
     try {
       const rdf = serializeToRDF(ontology, []);
       const blob = new Blob([rdf], { type: 'application/rdf+xml' });
@@ -39,9 +33,8 @@ export function DesignerActions() {
       a.download = `${ontology.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') || 'ontology'}.rdf`;
       a.click();
       URL.revokeObjectURL(url);
-      setExportMessage('RDF file downloaded!');
-    } catch (e) {
-      setExportMessage(`Export failed: ${(e as Error).message}`);
+    } catch {
+      // validation will catch issues
     }
   };
 
@@ -54,67 +47,62 @@ export function DesignerActions() {
 
   const handleNewOntology = () => {
     resetDraft();
-    setExportMessage(null);
   };
 
   const handleSubmitToCatalogue = () => {
     const errors = validate();
-    if (errors.length > 0) {
-      setExportMessage(null);
-      return;
-    }
+    if (errors.length > 0) return;
     setShowSubmitModal(true);
   };
 
   return (
-    <div className="designer-actions">
-      <div className="designer-actions-row">
-        <button className="designer-action-btn secondary" onClick={handleNewOntology}>
-          New
+    <>
+      <div className="designer-toolbar">
+        <button className="designer-toolbar-btn" onClick={handleNewOntology} title="New ontology">
+          <FilePlus size={14} /> New
         </button>
-        <button className="designer-action-btn secondary" onClick={handleValidate}>
-          Validate
+        <button className="designer-toolbar-btn" onClick={handleValidate} title="Validate ontology">
+          <CheckCircle size={14} /> Validate
         </button>
-        <button className="designer-action-btn primary" onClick={handleExportRDF}>
+        <div className="designer-toolbar-sep" />
+        <button className="designer-toolbar-btn primary" onClick={handleExportRDF} title="Export RDF">
           <Download size={14} /> Export RDF
         </button>
-        <button className="designer-action-btn primary" onClick={handleLoadInPlayground}>
+        <button className="designer-toolbar-btn primary" onClick={handleLoadInPlayground} title="Load in Playground">
           <Upload size={14} /> Load in Playground
         </button>
-      </div>
-      <div className="designer-actions-row">
-        <button className="designer-action-btn submit" onClick={handleSubmitToCatalogue} title={!GITHUB_CLIENT_ID ? 'Download RDF to submit manually' : 'Submit as a pull request'}>
+        <button className="designer-toolbar-btn submit" onClick={handleSubmitToCatalogue} title={!GITHUB_CLIENT_ID ? 'Download RDF to submit manually' : 'Submit as a pull request'}>
           <Github size={14} /> Submit to Catalogue
         </button>
       </div>
 
-      {/* Validation errors */}
-      {validationErrors.length > 0 && (
-        <div className="designer-validation-errors">
-          <div className="designer-validation-header">
-            <AlertTriangle size={14} /> {validationErrors.length} issue{validationErrors.length > 1 ? 's' : ''} to fix
-          </div>
-          <ul>
-            {validationErrors.map((err, i) => (
-              <li key={i}>
-                <ErrorItem error={err} />
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      {/* Success message */}
-      {exportMessage && validationErrors.length === 0 && (
-        <div className="designer-success-msg">
-          <CheckCircle size={14} /> {exportMessage}
-        </div>
-      )}
-
-      {/* Submit to Catalogue modal */}
       {showSubmitModal && (
         <SubmitCatalogueModal onClose={() => setShowSubmitModal(false)} />
       )}
+    </>
+  );
+}
+
+/**
+ * Validation feedback — rendered in the sidebar.
+ */
+export function DesignerValidation() {
+  const { validationErrors } = useDesignerStore();
+
+  if (validationErrors.length === 0) return null;
+
+  return (
+    <div className="designer-validation-errors">
+      <div className="designer-validation-header">
+        <AlertTriangle size={14} /> {validationErrors.length} issue{validationErrors.length > 1 ? 's' : ''} to fix
+      </div>
+      <ul>
+        {validationErrors.map((err, i) => (
+          <li key={i}>
+            <ErrorItem error={err} />
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

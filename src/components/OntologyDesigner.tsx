@@ -3,7 +3,7 @@ import { ArrowLeft } from 'lucide-react';
 import { useDesignerStore } from '../store/designerStore';
 import { useAppStore } from '../store/appStore';
 import { navigate } from '../lib/router';
-import { EntityForm, RelationshipForm, DesignerPreview, DesignerActions } from './designer';
+import { EntityForm, RelationshipForm, DesignerPreview, DesignerToolbar, DesignerValidation } from './designer';
 import type { Catalogue } from '../types/catalogue';
 import type { Route } from '../lib/router';
 
@@ -58,15 +58,16 @@ export function OntologyDesigner({ route }: OntologyDesignerProps) {
             placeholder="Description"
           />
         </div>
+        <DesignerToolbar />
       </div>
 
       {/* Split pane */}
       <div className="designer-split">
         {/* Left: editor forms */}
         <div className="designer-sidebar">
+          <DesignerValidation />
           <EntityForm />
           <RelationshipForm />
-          <DesignerActions />
         </div>
 
         {/* Right: live preview */}

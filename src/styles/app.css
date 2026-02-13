@@ -1558,8 +1558,8 @@ body {
 .designer-topbar {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 12px 20px;
+  gap: 12px;
+  padding: 8px 16px;
   background: var(--bg-secondary);
   border-bottom: 1px solid var(--border-color);
   flex-shrink: 0;
@@ -2035,42 +2035,58 @@ body {
   border-top: 1px solid var(--border-color);
 }
 
-/* Actions bar */
-.designer-actions {
-  border-top: 1px solid var(--border-color);
-  padding-top: 12px;
-}
-.designer-actions-row {
+/* Toolbar (in topbar) */
+.designer-toolbar {
   display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  flex-shrink: 0;
 }
 
-.designer-action-btn {
+.designer-toolbar-sep {
+  width: 1px;
+  height: 20px;
+  background: var(--border-color);
+  margin: 0 4px;
+}
+
+.designer-toolbar-btn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 14px;
-  border: none;
+  gap: 5px;
+  padding: 6px 12px;
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background var(--transition-fast);
-}
-.designer-action-btn.primary {
-  background: var(--ms-blue);
-  color: white;
-}
-.designer-action-btn.primary:hover { background: var(--ms-blue-dark); }
-.designer-action-btn.secondary {
   background: var(--bg-tertiary);
   color: var(--text-secondary);
-  border: 1px solid var(--border-color);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--transition-fast), color var(--transition-fast);
 }
-.designer-action-btn.secondary:hover {
+.designer-toolbar-btn:hover {
   background: var(--bg-elevated);
   color: var(--text-primary);
+}
+.designer-toolbar-btn.primary {
+  background: var(--ms-blue);
+  color: white;
+  border-color: var(--ms-blue);
+}
+.designer-toolbar-btn.primary:hover {
+  background: var(--ms-blue-dark);
+  border-color: var(--ms-blue-dark);
+}
+.designer-toolbar-btn.submit {
+  background: #24292e;
+  color: #fff;
+  border-color: #24292e;
+}
+.designer-toolbar-btn.submit:hover {
+  background: #2f363d;
+  border-color: #2f363d;
 }
 
 /* Validation errors */
@@ -2120,6 +2136,35 @@ body {
   gap: 6px;
   font-size: 13px;
   color: var(--ms-green);
+}
+
+/* Shared button style (used in submit modal) */
+.designer-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  text-decoration: none;
+}
+.designer-action-btn.primary {
+  background: var(--ms-blue);
+  color: white;
+}
+.designer-action-btn.primary:hover { background: var(--ms-blue-dark); }
+.designer-action-btn.secondary {
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+}
+.designer-action-btn.secondary:hover {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
 }
 
 /* ── Submit to Catalogue Modal ── */
