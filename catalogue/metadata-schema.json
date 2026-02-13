@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ontology-quest/metadata-schema.json",
+  "title": "Ontology Catalogue Metadata",
+  "description": "Metadata for an ontology entry in the catalogue",
+  "type": "object",
+  "required": ["id", "name", "description", "category"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$",
+      "description": "URL-safe slug identifier (lowercase, hyphens only)"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable ontology name"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Short description of the ontology"
+    },
+    "icon": {
+      "type": "string",
+      "description": "Emoji icon for display"
+    },
+    "category": {
+      "type": "string",
+      "enum": ["retail", "healthcare", "finance", "manufacturing", "education", "general"],
+      "description": "Domain category"
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Optional tags for filtering"
+    },
+    "author": {
+      "type": "string",
+      "description": "Author name or GitHub username"
+    }
+  },
+  "additionalProperties": false
+}

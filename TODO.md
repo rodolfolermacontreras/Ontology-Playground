@@ -69,7 +69,7 @@ the **primary** deployment target; GitHub Pages support is for forks.
 The existing workflow
 `.github/workflows/azure-static-web-apps-green-plant-0bb1d2910.yml` handles
 build + deploy. Adapt it for the new build pipeline:
-- [ ] Add `npm run catalogue:build` step before the SWA deploy action (once
+- [x] Add `npm run catalogue:build` step before the SWA deploy action (once
   §3.2 is done)
 - [x] Verify `staticwebapp.config.json` is correct for the static-only build
   (remove `api_location` if the API feature flag is off)
@@ -97,8 +97,8 @@ A curated + community-driven catalogue of ontologies, compiled at build time
 into a static JSON file.
 
 ### 3.1 Catalogue file structure
-- [ ] Create `catalogue/` directory at repo root
-- [ ] Define a folder convention:
+- [x] Create `catalogue/` directory at repo root
+- [x] Define a folder convention:
   ```
   catalogue/
     official/
@@ -110,21 +110,21 @@ into a static JSON file.
         <ontology-slug>.rdf
         metadata.json    ← { name, description, author, tags, ... }
   ```
-- [ ] Create a JSON Schema for `metadata.json` to validate contributions
-- [ ] Existing sample ontologies in `src/data/sampleOntologies.ts` should be
+- [x] Create a JSON Schema for `metadata.json` to validate contributions
+- [x] Existing sample ontologies in `src/data/sampleOntologies.ts` should be
   migrated to `catalogue/official/` as RDF files with metadata
 
 ### 3.2 Build-time catalogue compilation
-- [ ] Write a build script (`scripts/compile-catalogue.ts`) that:
+- [x] Write a build script (`scripts/compile-catalogue.ts`) that:
   1. Reads all `catalogue/**/*.rdf` files
   2. Parses each via the RDF parser from §1
   3. Reads associated `metadata.json`
   4. Emits `public/catalogue.json` — a single JSON file with all ontologies,
      metadata, and category info
-- [ ] Add an npm script: `"catalogue:build": "tsx scripts/compile-catalogue.ts"`
-- [ ] Integrate into `npm run build`:
+- [x] Add an npm script: `"catalogue:build": "tsx scripts/compile-catalogue.ts"`
+- [x] Integrate into `npm run build`:
   `"build": "npm run catalogue:build && tsc -b && vite build"`
-- [ ] On build failure (invalid RDF, missing metadata), fail loudly with a
+- [x] On build failure (invalid RDF, missing metadata), fail loudly with a
   helpful error message
 
 ### 3.3 Community contribution workflow (Microsoft OSS conventions)
