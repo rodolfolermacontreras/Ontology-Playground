@@ -38,7 +38,7 @@ const NLBuilderModal = AI_BUILDER_ENABLED
 function App() {
   const route = useRoute();
 
-  const [showWelcome, setShowWelcome] = useState(() => isTourDismissed());
+  const [showWelcome, setShowWelcome] = useState(false);
   const [showTour, setShowTour] = useState(() => !isTourDismissed());
   const [showHelp, setShowHelp] = useState(false);
   const [showDataSources, setShowDataSources] = useState(false);

@@ -49,19 +49,47 @@ interface GuidedTourProps {
   onComplete: () => void;
 }
 
+/** Check if a DOM element is visible (has non-zero dimensions) */
+function isElementVisible(selector: string): boolean {
+  const el = document.querySelector(selector);
+  if (!el) return false;
+  const r = el.getBoundingClientRect();
+  return r.width > 0 && r.height > 0;
+}
+
 export function GuidedTour({ onComplete }: GuidedTourProps) {
-  const [step, setStep] = useState(0);
+  const [visibleSteps, setVisibleSteps] = useState<TourStep[]>([]);
+  const [stepIdx, setStepIdx] = useState(0);
   const [rect, setRect] = useState<DOMRect | null>(null);
 
-  const current = tourSteps[step];
+  const dismiss = useCallback(() => {
+    try { localStorage.setItem(STORAGE_KEY, 'true'); } catch { /* noop */ }
+    onComplete();
+  }, [onComplete]);
+
+  // Filter steps to only those whose target element is visible.
+  // On mobile (≤900px), panels like .quest-panel and .right-sidebar are
+  // display:none, so they get filtered out. If no steps are visible
+  // (e.g. very small screen), auto-dismiss the tour.
+  useEffect(() => {
+    const visible = tourSteps.filter(s => isElementVisible(s.target));
+    if (visible.length === 0) {
+      dismiss();
+      return;
+    }
+    setVisibleSteps(visible);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const current = visibleSteps[stepIdx];
 
   // Measure the target element
   const measure = useCallback(() => {
+    if (!current) return;
     const el = document.querySelector(current.target);
     if (el) {
       setRect(el.getBoundingClientRect());
     }
-  }, [current.target]);
+  }, [current]);
 
   useEffect(() => {
     measure();
@@ -73,22 +101,20 @@ export function GuidedTour({ onComplete }: GuidedTourProps) {
     };
   }, [measure]);
 
-  const dismiss = useCallback(() => {
-    try { localStorage.setItem(STORAGE_KEY, 'true'); } catch { /* noop */ }
-    onComplete();
-  }, [onComplete]);
-
   const next = () => {
-    if (step < tourSteps.length - 1) {
-      setStep(s => s + 1);
+    if (stepIdx < visibleSteps.length - 1) {
+      setStepIdx(s => s + 1);
     } else {
       dismiss();
     }
   };
 
   const prev = () => {
-    if (step > 0) setStep(s => s - 1);
+    if (stepIdx > 0) setStepIdx(s => s - 1);
   };
+
+  // Nothing to show yet (steps still being filtered, or will auto-dismiss)
+  if (!current) return null;
 
   // Compute tooltip position, clamped within the viewport
   const tooltipStyle = (): React.CSSProperties => {
@@ -140,7 +166,7 @@ export function GuidedTour({ onComplete }: GuidedTourProps) {
       />
       <motion.div
         className="tour-tooltip"
-        key={step}
+        key={stepIdx}
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -8 }}
@@ -148,7 +174,7 @@ export function GuidedTour({ onComplete }: GuidedTourProps) {
         style={tooltipStyle()}
       >
         <div className="tour-tooltip-header">
-          <span className="tour-tooltip-step">{step + 1}/{tourSteps.length}</span>
+          <span className="tour-tooltip-step">{stepIdx + 1}/{visibleSteps.length}</span>
           <button className="tour-tooltip-close" onClick={dismiss} aria-label="Close tour">
             <X size={16} />
           </button>
@@ -156,13 +182,13 @@ export function GuidedTour({ onComplete }: GuidedTourProps) {
         <h4 className="tour-tooltip-title">{current.title}</h4>
         <p className="tour-tooltip-desc">{current.description}</p>
         <div className="tour-tooltip-actions">
-          {step > 0 && (
+          {stepIdx > 0 && (
             <button className="tour-btn tour-btn-secondary" onClick={prev}>
               <ChevronLeft size={14} /> Back
             </button>
           )}
           <button className="tour-btn tour-btn-primary" onClick={next}>
-            {step < tourSteps.length - 1 ? (
+            {stepIdx < visibleSteps.length - 1 ? (
               <>Next <ChevronRight size={14} /></>
             ) : (
               'Get started!'
