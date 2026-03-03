@@ -60,6 +60,8 @@
   /* Chess board pattern colors for dark mode - futuristic theme */
   --chess-square-dark: rgba(20, 30, 50, 0.85);
   --chess-square-light: rgba(30, 50, 80, 0.65);
+  --about-link-color: #9fd6ff;
+  --about-link-hover-color: #c8e8ff;
 }
 
 /* Light Theme */
@@ -86,6 +88,19 @@
   /* Chess board pattern colors for light mode - futuristic theme */
   --chess-square-dark: rgba(220, 230, 245, 0.8);
   --chess-square-light: rgba(240, 245, 255, 0.9);
+  --about-link-color: #004578;
+  --about-link-hover-color: #003a63;
+}
+
+.about-link {
+  color: var(--about-link-color);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-weight: 600;
+}
+
+.about-link:hover {
+  color: var(--about-link-hover-color);
 }
 
 * {
