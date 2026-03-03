@@ -94,8 +94,10 @@ export function Header({ onAboutClick, onHelpClick, onDataSourcesClick, onImport
           <path d="M17 17H24V24H17V17Z" fill="white" opacity="0.5"/>
         </svg>
         <div>
-          <span className="header-title">{ontologyDisplayName}</span>
-          <span className="header-subtitle">Ontology Playground (Preview)</span>
+          <span className="header-title">
+            Ontology Playground <span className="header-title-preview">(Preview)</span>
+          </span>
+          <span className="header-context">{ontologyDisplayName}</span>
         </div>
       </div>
 
