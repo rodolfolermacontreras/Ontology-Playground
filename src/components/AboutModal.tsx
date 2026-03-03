@@ -38,6 +38,7 @@ export function AboutModal({ onClose }: AboutModalProps) {
             <p className="feature-text" style={{ margin: '10px 0 0 0' }}>
               Learn more about Microsoft Fabric IQ:{' '}
               <a
+                className="about-link"
                 href="https://learn.microsoft.com/fabric/iq/overview"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -57,7 +58,7 @@ export function AboutModal({ onClose }: AboutModalProps) {
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
               <Info size={18} color="var(--ms-blue)" />
-              <strong style={{ color: 'var(--ms-blue)' }}>Trademark Notice</strong>
+              <strong style={{ color: 'var(--text-primary)' }}>Trademark Notice</strong>
             </div>
             <p style={{ fontSize: 13, lineHeight: 1.6, color: 'var(--text-secondary)', margin: 0 }}>
               Trademarks This project may contain trademarks or logos for projects, products, or services. Authorized
